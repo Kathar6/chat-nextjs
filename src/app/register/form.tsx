@@ -4,13 +4,14 @@ import Link from "next/link"
 import { useForm, Controller } from "react-hook-form"
 import { Box, TextField, FormControl, Button } from "@mui/material"
 
-export default function LoginForm() {
+export default function RegisterForm() {
   //#region hooks
   const { control, handleSubmit } = useForm({
     mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      "confirm-password": "",
     },
   })
   //#endregion
@@ -20,7 +21,7 @@ export default function LoginForm() {
     console.log(data)
     try {
       const payload = data
-      const response = await fetch("http://127.0.0.1:8888/login", {
+      const response = await fetch("http://127.0.0.1:8888/register", {
         method: "POST",
         headers: {
           Accept: "application/json, text/plain, */*",
@@ -79,12 +80,28 @@ export default function LoginForm() {
             )}
           />
         </FormControl>
+        <FormControl>
+          <Controller
+            name="confirm-password"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                label="Confirm Password"
+                type="password"
+                variant="standard"
+                autoComplete="current-password"
+                onChange={onChange}
+                value={value}
+              />
+            )}
+          />
+        </FormControl>
         <Button type="submit" variant="contained">
-          Log in
+          Register
         </Button>
         <small>
-          Don&apos;t have an account yet?
-          <Link href="register">Register</Link>
+          Have an account?
+          <Link href="/login">Log in</Link>
         </small>
       </Box>
     </form>
