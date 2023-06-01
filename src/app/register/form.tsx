@@ -1,4 +1,8 @@
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+
+// Services
+import HttpClient from "../lib/utils/HttpClient/client"
 
 // Vendor
 import { useForm, Controller } from "react-hook-form"
@@ -6,6 +10,7 @@ import { Box, TextField, FormControl, Button } from "@mui/material"
 
 export default function RegisterForm() {
   //#region hooks
+  const router = useRouter()
   const { control, handleSubmit } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -18,21 +23,14 @@ export default function RegisterForm() {
 
   //#region events
   const onSubmit = async (data: Record<any, any>) => {
-    console.log(data)
     try {
-      const payload = data
-      const response = await fetch("http://127.0.0.1:8888/register", {
-        method: "POST",
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "Accept",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-      const jsonResponse = await response.json()
-      console.log(jsonResponse)
+      const payload = JSON.stringify(data)
+      const service = new HttpClient(payload)
+      const rawResponse = await service.post("register")
+      const response = await rawResponse.json()
+      if (response.OK) {
+        return router.push("/login")
+      }
     } catch (error) {
       return console.error(error)
     }
