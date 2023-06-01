@@ -1,6 +1,19 @@
-"use client"
-import { Box, Paper } from "@mui/material"
+"use client";
+import { Box } from "@mui/material";
+import { ReactNode } from "react";
 
-export default function ChatLayout() {
-  return <Box></Box>
+type Props = {
+  children: ReactNode;
+};
+
+export default function ChatLayout({ children }: Props) {
+  return (
+    <Box
+      sx={{
+        backgroundColor: "",
+      }}
+    >
+      {children}
+    </Box>
+  );
 }

@@ -11,6 +11,10 @@ export default function Login() {
   return (
     <Card
       sx={{
+        paddingX: {
+          md: "2rem",
+          sm: "0",
+        },
         width: "100%",
         height: "100%",
         display: "flex",

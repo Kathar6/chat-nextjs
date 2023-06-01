@@ -1,11 +1,25 @@
-import { ReactNode } from "react"
+"use client";
+
+import { ReactNode } from "react";
+import { Box } from "@mui/material";
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 export default function AuthLayout({ children }: Props) {
   return (
-    <div className="flex justify-center m-1 w-2/5 text-white">{children}</div>
-  )
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        margin: "1rem",
+        width: "400px",
+        maxWidth: "90%",
+        color: "white",
+      }}
+    >
+      {children}
+    </Box>
+  );
 }

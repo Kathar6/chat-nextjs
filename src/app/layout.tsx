@@ -1,46 +1,51 @@
-"use client"
+"use client";
 
-import "./globals.css"
-import { Inter } from "next/font/google"
+// Theme
+import { theme } from "./theme/themes";
 
-import { theme } from "./theme/themes"
-import { ThemeProvider, CssBaseline, Box } from "@mui/material"
+// Styles
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] })
+// Next
+import { Inter } from "next/font/google";
 
-const metadata = {
-  title: "Chat",
-  description: "Simple chat with web sockets",
-}
+// Vendor
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { ThemeProvider, CssBaseline, Box } from "@mui/material";
+
+const inter = Inter({ subsets: ["latin"] });
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <header>
+      <head>
         <title>Chat</title>
-      </header>
+      </head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <body className={inter.className}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              bgcolor: "#FAFAFA",
-              alignItems: "center",
-            }}
-          >
-            {children}
-          </Box>
+          <QueryClientProvider client={queryClient}>
+            <Box
+              sx={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                bgcolor: "#FAFAFA",
+                alignItems: "center",
+              }}
+            >
+              {children}
+            </Box>
+          </QueryClientProvider>
         </body>
       </ThemeProvider>
     </html>
-  )
+  );
 }
