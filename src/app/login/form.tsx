@@ -25,6 +25,7 @@ export default function LoginForm() {
     try {
       const payload = JSON.stringify(data);
       const service = new HttpClient(payload);
+      service.setConfig({ credentials: "include" });
       const rawResponse = await service.post("login");
 
       const response = await rawResponse.json();
