@@ -4,3 +4,17 @@
 
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+:root {
+  --primary-light: #C5CAE9;
+  --primary-main: #3F51B5;
+  --primary-dark: #303F9F;
+  
+  --secondary-light: #4d5464;
+  --secondary-main: #212A3E;
+  --secondary-dark: #171d2b;
+
+  --success: #2EA12C;
+  --warning: #C75C1A;
+  --danger: #B31A1A;
+}

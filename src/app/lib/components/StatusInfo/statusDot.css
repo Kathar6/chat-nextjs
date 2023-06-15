@@ -1,0 +1,11 @@
+.status-dot.success {
+  background-color: var(--success);
+}
+
+.status-dot.warning {
+  background-color: var(--warning);
+}
+
+.status-dot.danger {
+  background-color: var(--danger);
+}

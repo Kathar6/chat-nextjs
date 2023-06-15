@@ -1,5 +1,4 @@
 "use client";
-import { Box } from "@mui/material";
 import { ReactNode } from "react";
 
 type Props = {
@@ -7,13 +6,5 @@ type Props = {
 };
 
 export default function ChatLayout({ children }: Props) {
-  return (
-    <Box
-      sx={{
-        backgroundColor: "",
-      }}
-    >
-      {children}
-    </Box>
-  );
+  return <div className="w-screen h-screen">{children}</div>;
 }
