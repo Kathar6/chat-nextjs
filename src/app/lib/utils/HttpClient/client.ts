@@ -1,54 +1,68 @@
 import { DEFAULT_HEADERS, DEFAULT_BASE_URL } from "./config";
 
+import HttpErrorException from "./exception";
+
 // Types
 import type { HttpMethods } from "./types";
 
 class HttpClient {
-  private headers: HeadersInit = DEFAULT_HEADERS;
-  private body?: BodyInit;
+  private headers: HeadersInit;
   private config?: RequestInit;
-  private baseUrl: string = DEFAULT_BASE_URL;
+  private baseUrl: string;
+  private abortController: AbortController;
 
-  constructor();
-  constructor(body?: BodyInit);
-  constructor(headers?: HeadersInit, body?: BodyInit);
-  constructor(...args: any[]) {
-    if (args.length === 1) {
-      this.onlyBody(args[0] as BodyInit);
-    }
-    if (args.length >= 2) {
-      const headers = args[0] as HeadersInit;
-      const body = args[1] as BodyInit;
-      this.initAll(headers, body);
-    }
+  constructor() {
+    this.headers = DEFAULT_HEADERS;
+
+    this.baseUrl = DEFAULT_BASE_URL;
+
+    this.abortController = new AbortController();
   }
 
-  private onlyBody(body: BodyInit) {
-    this.body = body;
+  public addHeaders(headers: HeadersInit) {
+    this.headers = {
+      ...this.headers,
+      ...headers,
+    };
   }
 
-  private initAll(headers?: HeadersInit, body?: BodyInit) {
-    if (headers)
-      this.headers = {
-        ...this.headers,
-        ...headers,
-      };
-    if (body) this.body = body;
+  public abort() {
+    this.abortController.abort();
   }
 
-  private getMergedUrl(url: string) {
+  private mergeWithBaseURL(url: string) {
     const newUrl = new URL(url, this.baseUrl);
     return newUrl;
   }
 
-  private bootstrap(url: string, method: HttpMethods) {
-    const mergedUrl = this.getMergedUrl(url);
-    return fetch(mergedUrl, {
+  private async makeRequest<T extends BodyInit>(
+    url: string,
+    method: HttpMethods,
+    payload: T
+  ) {
+    const mergedUrl = this.mergeWithBaseURL(url);
+
+    const response = await fetch(mergedUrl, {
       headers: this.headers,
       method,
-      body: this.body,
+      body: payload,
+      signal: this.abortController.signal,
       ...this.config,
     });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+
+      let message = "There was an error fetching the request";
+
+      if (errorResponse.error) {
+        message = errorResponse.error;
+      }
+
+      throw new HttpErrorException(message);
+    }
+
+    return response;
   }
 
   setConfig(config: RequestInit) {
@@ -56,24 +70,24 @@ class HttpClient {
     return this;
   }
 
-  get(url: string) {
-    return this.bootstrap(url, "GET");
+  get<T extends BodyInit>(url: string, payload: T) {
+    return this.makeRequest(url, "GET", payload);
   }
 
-  post(url: string) {
-    return this.bootstrap(url, "POST");
+  post<T extends BodyInit>(url: string, payload: T) {
+    return this.makeRequest(url, "POST", payload);
   }
 
-  put(url: string) {
-    return this.bootstrap(url, "PUT");
+  put<T extends BodyInit>(url: string, payload: T) {
+    return this.makeRequest(url, "PUT", payload);
   }
 
-  patch(url: string) {
-    return this.bootstrap(url, "PATCH");
+  patch<T extends BodyInit>(url: string, payload: T) {
+    return this.makeRequest(url, "PATCH", payload);
   }
 
-  delete(url: string) {
-    return this.bootstrap(url, "DELETE");
+  delete<T extends BodyInit>(url: string, payload: T) {
+    return this.makeRequest(url, "DELETE", payload);
   }
 }
 

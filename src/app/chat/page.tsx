@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 
 // Components
 import {
+  Avatar,
   ChatContainer,
+  ChatMessage,
+  ChatMessageContainer,
+  ChatMessageText,
   Separator,
   SideBar,
   SideBarBody,
@@ -64,7 +68,14 @@ export default function Chat() {
 
   return (
     <div className="chat-container">
-      <ChatContainer>a</ChatContainer>
+      <ChatContainer>
+        <ChatMessage>
+          <Avatar name="Usuario" />
+          <ChatMessageContainer>
+            <ChatMessageText>Lorem Ipsum</ChatMessageText>
+          </ChatMessageContainer>
+        </ChatMessage>
+      </ChatContainer>
       <SideBar className="col-start-2 w-full">
         <SideBarHeader>
           <UserHeaderInfo name="Usuario" status={UserStates.AVAILABLE} />

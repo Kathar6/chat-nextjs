@@ -10,6 +10,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 
 // Vendor
+import { Toaster } from "react-hot-toast";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ThemeProvider, CssBaseline, Box } from "@mui/material";
 
@@ -44,6 +45,7 @@ export default function RootLayout({
               {children}
             </Box>
           </QueryClientProvider>
+          <Toaster position="top-center" />
         </body>
       </ThemeProvider>
     </html>

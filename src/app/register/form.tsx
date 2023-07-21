@@ -1,16 +1,16 @@
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Services
-import HttpClient from "../lib/utils/HttpClient/client"
+import HttpClient from "../lib/utils/HttpClient/client";
 
 // Vendor
-import { useForm, Controller } from "react-hook-form"
-import { Box, TextField, FormControl, Button } from "@mui/material"
+import { useForm, Controller } from "react-hook-form";
+import { Box, TextField, FormControl, Button } from "@mui/material";
 
 export default function RegisterForm() {
   //#region hooks
-  const router = useRouter()
+  const router = useRouter();
   const { control, handleSubmit } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -18,23 +18,25 @@ export default function RegisterForm() {
       password: "",
       "confirm-password": "",
     },
-  })
+  });
   //#endregion
 
   //#region events
   const onSubmit = async (data: Record<any, any>) => {
     try {
-      const payload = JSON.stringify(data)
-      const service = new HttpClient(payload)
-      const rawResponse = await service.post("register")
-      const response = await rawResponse.json()
-      if (response.OK) {
-        return router.push("/login")
-      }
+      const service = new HttpClient();
+
+      const payload = JSON.stringify(data);
+
+      const rawResponse = await service.post("register", payload);
+
+      await rawResponse.json();
+
+      return router.push("/login");
     } catch (error) {
-      return console.error(error)
+      return console.error(error);
     }
-  }
+  };
   //#endregion
 
   return (
@@ -103,5 +105,5 @@ export default function RegisterForm() {
         </small>
       </Box>
     </form>
-  )
+  );
 }

@@ -17,3 +17,12 @@ export { default as UserHeaderInfo } from "./UserHeaderInfo";
 
 // ChatContainer
 export { default as ChatContainer } from "./ChatContainer";
+
+// ChatMessage
+export { default as ChatMessage } from "./ChatMessage";
+
+// ChatMessageContainer
+export { default as ChatMessageContainer } from "./ChatMessageContainer";
+
+// ChatMessageText
+export { default as ChatMessageText } from "./ChatMessageText";
